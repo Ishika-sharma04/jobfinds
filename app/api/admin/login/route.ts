@@ -17,6 +17,6 @@ export async function POST(request: Request) {
   if (supplied.length !== expected.length || !timingSafeEqual(supplied, expected)) return NextResponse.json({ error: 'The admin secret is incorrect.' }, { status: 401 });
   const token = adminSessionToken(configured);
   const response = NextResponse.json({ ok: true });
-  if (token) response.cookies.set(adminCookieName, token, { httpOnly: true, sameSite: 'strict', secure: new URL(request.url).protocol === 'https:', path: '/', maxAge: 60 * 60 * 24 * 7 });
+  if (token) response.cookies.set(adminCookieName, token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', path: '/', maxAge: 60 * 60 * 24 * 7 });
   return response;
 }

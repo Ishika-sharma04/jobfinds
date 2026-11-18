@@ -1,11 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { LockKeyhole } from 'lucide-react';
 
 export default function AdminLogin({ configured }: { configured: boolean }) {
-  const router = useRouter();
   const [secret, setSecret] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -15,7 +13,9 @@ export default function AdminLogin({ configured }: { configured: boolean }) {
       const response = await fetch('/api/admin/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ secret }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Could not sign in.');
-      setSecret(''); router.refresh();
+      setSecret('');
+      // A full request makes the server read the newly set HttpOnly session cookie.
+      window.location.replace('/admin');
     } catch (e) { setError(e instanceof Error ? e.message : 'Could not sign in.'); }
     finally { setBusy(false); }
   }
