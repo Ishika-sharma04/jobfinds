@@ -1,0 +1,12 @@
+node_modules
+.next
+.next-dev
+.next-review
+.next-verify
+dist
+out
+.env*
+!.env.example
+coverage
+.vercel
+*.tsbuildinfo

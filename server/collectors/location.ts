@@ -1,0 +1,3 @@
+const INDIA_HINTS=/\b(india|bengaluru|bangalore|mumbai|pune|hyderabad|chennai|gurugram|gurgaon|noida|delhi|kolkata|ahmedabad|jaipur|kochi|thiruvananthapuram|lucknow|indore|chandigarh)\b/i;
+const NON_INDIA_COUNTRY=/\b(united states|u\.?s\.?a?\.?|america|canada|united kingdom|u\.?k\.?|britain|germany|france|spain|italy|netherlands|singapore|australia|new zealand|japan|china|brazil|mexico|ireland|poland|switzerland|sweden|norway|denmark|finland|israel|south africa)\b/i;
+export function isIndiaRelevant(text:string){const india=/\bindia\b/i.test(text);if(NON_INDIA_COUNTRY.test(text)&&!india)return false;return INDIA_HINTS.test(text);}

@@ -1,0 +1,2 @@
+export type Job = { id:string; title:string; company:string; location:string|null; city:string|null; state:string|null; category:string|null; experience_level:string|null; job_type:string|null; work_mode:string|null; description:string|null; requirements:string|null; skills:string[]; source:string; source_url:string; canonical_url:string; posted_at:string|null; first_seen_at:string; is_fresher:boolean|null; verified_at:string|null; status:string };
+export type JobSummary = Omit<Job, 'description' | 'requirements' | 'canonical_url'>;

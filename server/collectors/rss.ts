@@ -1,0 +1,8 @@
+import Parser from 'rss-parser';
+import * as cheerio from 'cheerio';
+import type {RawJob} from './types';
+import {sourceErrorMessage,sourceStatuses} from './status';
+import {isIndiaRelevant} from './location';
+const parser=new Parser({timeout:15000,headers:{'User-Agent':'FresherJobsIndia/1.0 (public jobs RSS reader)'}});
+const feeds=()=>[...new Set((process.env.RSS_FEEDS||'').split(',').map(x=>x.trim()).filter(Boolean))].map(x=>{const [publisher,url]=x.split('|');return {publisher:publisher?.trim(),url:url?.trim()};}).filter(x=>x.publisher&&x.url);
+export async function collectRss():Promise<RawJob[]>{const out:RawJob[]=[];for(const feed of feeds()){const id=`RSS:${feed.publisher}`;try{if(!feed.url!.startsWith('https://'))throw new Error('RSS feed must use HTTPS');const parsed=await parser.parseURL(feed.url!);const start=out.length;for(const item of parsed.items){const url=item.link||'';if(!/^https:\/\//i.test(url)||!item.title)continue;const html=item['content:encoded']||item.content||item.contentSnippet||item.summary||'';const $=cheerio.load(html);const description=$.text().replace(/\s+/g,' ').trim();const searchable=`${item.title} ${item.contentSnippet||''} ${description}`;if(!isIndiaRelevant(searchable))continue;out.push({title:item.title.trim(),company:feed.publisher!,location:'',description,url,postedAt:item.isoDate||item.pubDate||null,source:`RSS · ${feed.publisher}`,sourceId:item.guid||url});}sourceStatuses[id]={status:'success',items:out.length-start};await new Promise(r=>setTimeout(r,500));}catch(e){const msg=sourceErrorMessage(e);sourceStatuses[id]={status:'failed',items:0,error:msg};console.error('RSS feed failed',feed.publisher,msg);}}return out;}

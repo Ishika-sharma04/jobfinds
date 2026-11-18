@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="container" style={{paddingTop:36}} aria-label="Loading jobs"><div className="skeleton skeleton-title"/><div className="skeleton skeleton-copy"/><div className="skeleton-grid"><div className="skeleton skeleton-filter"/><div className="skeleton skeleton-cards"/></div></main>}
