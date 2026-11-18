@@ -21,11 +21,14 @@ export default function PersonalDashboard(){
  const [open,setOpen]=useState(false);
 
  useEffect(()=>{
-  try{const value=localStorage.getItem(STORAGE_KEY);if(value){const saved=JSON.parse(value) as Profile;setProfile(saved);setForm(saved);applyGoal(saved.goal,true);}else setOpen(true);}catch{setOpen(true);}
+  try{const value=localStorage.getItem(STORAGE_KEY);if(value){const saved=JSON.parse(value) as Profile;setProfile(saved);setForm(saved);applyGoal(saved.goal,true);}}catch{/* Keep onboarding available from an explicit action if storage is unavailable. */}
   setReady(true);
+  const openProfile=()=>setOpen(true);
+  window.addEventListener('fresherjobs:open-profile',openProfile);
+  return()=>window.removeEventListener('fresherjobs:open-profile',openProfile);
  },[]);
 
- function applyGoal(goal:Goal,onlyIfMissing=false){document.cookie=`fresherjobs_goal=${goal}; Max-Age=31536000; Path=/; SameSite=Lax${window.location.protocol==='https:'?'; Secure':''}`;const url=new URL(window.location.href);if(url.pathname!=='/'){url.pathname='/';url.search='';}const required=goal==='internship'?'Internship':goal==='job'?'Full-time':null;if(onlyIfMissing&&(!required||url.searchParams.get('type')===required))return;if(required)url.searchParams.set('type',required);else if(!onlyIfMissing)url.searchParams.delete('type');url.searchParams.delete('page');router.replace(`${url.pathname}${url.search}`,{scroll:false});}
+ function applyGoal(goal:Goal,onlyIfMissing=false){document.cookie=`fresherjobs_goal=${goal}; Max-Age=31536000; Path=/; SameSite=Lax${window.location.protocol==='https:'?'; Secure':''}`;if(pathname!=='/')return;const url=new URL(window.location.href);const required=goal==='internship'?'Internship':goal==='job'?'Full-time':null;if(onlyIfMissing&&(!required||url.searchParams.get('type')===required))return;if(required)url.searchParams.set('type',required);else if(!onlyIfMissing)url.searchParams.delete('type');url.searchParams.delete('page');router.replace(`${url.pathname}${url.search}`,{scroll:false});}
 
  function edit(){setForm(profile||{name:'',stage:'fresher',goal:'job'});setOpen(true);}
  function refreshOpenings(){if(pathname==='/'){window.dispatchEvent(new Event('fresherjobs:refresh-openings'));return;}try{localStorage.setItem('fresherjobs.refresh_pending','1');}catch{/* Navigation still returns to the latest openings. */}router.push('/?refresh=1');}
