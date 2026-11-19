@@ -14,6 +14,7 @@
   },
   "include": [
     "server/collect.ts",
+    "server/backfill-job-fields.ts",
     "server/check-sources.ts",
     "server/ingest.ts",
     "server/classification/**/*.ts",

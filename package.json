@@ -8,7 +8,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "collect": "tsc -p tsconfig.collect.json && node dist/server/collect.js",
-    "sources:check": "tsc -p tsconfig.collect.json && node dist/server/check-sources.js"
+    "sources:check": "tsc -p tsconfig.collect.json && node dist/server/check-sources.js",
+    "jobs:backfill-fields": "tsc -p tsconfig.collect.json && node dist/server/backfill-job-fields.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
