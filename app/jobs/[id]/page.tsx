@@ -34,9 +34,9 @@ export default async function JobDetail({ params }: { params: Promise<{ id: stri
     .map(visible)
     .filter((value): value is string => Boolean(value));
   const place = visible(job.city) || visible(job.location);
-  const experience = visible(job.experience_level) || 'Classification pending';
-  const type = visible(job.job_type) || 'Classification pending';
-  const mode = visible(job.work_mode) || 'Classification pending';
+  const experience = visible(job.experience_level) || 'Not specified by employer';
+  const type = visible(job.job_type) || 'Not specified by employer';
+  const mode = visible(job.work_mode) || 'Not specified by employer';
 
   return <>
     <header className="nav"><div className="container nav-inner">

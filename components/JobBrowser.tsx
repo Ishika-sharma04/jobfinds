@@ -22,7 +22,8 @@ const selectMeta = {
 function JobCard({ job }: { job: JobSummary }) {
   const workMode = job.work_mode && !/^(not specified|other)$/i.test(job.work_mode) ? job.work_mode : 'Work mode not specified';
   const role = job.category && !/^(not specified|other)$/i.test(job.category) ? job.category : 'Role category not classified';
-  const meta = [job.city || job.location, job.job_type, job.experience_level, workMode, role].filter((value) => value && !/^(not specified|other)$/i.test(value));
+  const experience = job.experience_level && !/^(not specified|other)$/i.test(job.experience_level) ? job.experience_level : 'Experience not specified';
+  const meta = [job.city || job.location, job.job_type, experience, workMode, role].filter((value) => value && !/^(not specified|other)$/i.test(value));
   const date = job.posted_at || job.first_seen_at;
   return <article className="job"><div className="jobtop"><Link className="job-overview" href={`/jobs/${job.id}`}><div className="company-mark">{job.company.slice(0, 1).toUpperCase()}</div><div className="job-heading"><div className="jobtitle">{job.title}</div><div className="company">{job.company}</div></div></Link><div className="job-actions"><span className="badge">{job.is_fresher === true ? 'Early-career match' : 'Fresher status unverified'}</span><SaveJobButton id={job.id}/><Link className="card-apply" href={`/jobs/${job.id}`}>Details <ArrowUpRight size={14}/></Link></div></div>
     <div className="tags">{meta.map((item, index) => <span className={`tag ${index === 1 ? 'blue' : ''}`} key={`${item}-${index}`}>{index === 0 && <MapPin size={11} style={{ display: 'inline', verticalAlign: '-2px', marginRight: 3 }}/ >}{item}</span>)}</div>

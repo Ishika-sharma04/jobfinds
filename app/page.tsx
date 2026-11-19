@@ -6,7 +6,7 @@ import JobBrowser from '@/components/JobBrowser';
 const options = {
   city: ['Bengaluru', 'Bangalore', 'Mumbai', 'Hyderabad', 'Pune', 'Delhi NCR', 'Noida', 'Gurugram', 'Chennai', 'Kolkata', 'Ahmedabad', 'Jaipur', 'Kochi', 'Thiruvananthapuram', 'Lucknow', 'Indore', 'Chandigarh', 'Remote'],
   role: ['Engineering', 'Data', 'Design', 'Finance', 'Product', 'Sales', 'Marketing', 'Operations', 'Human Resources', 'Customer Support'],
-  experience: ['Internship', 'Entry level', '0 to 1 years', '1 to 2 years'],
+  experience: ['Internship', 'Entry level', '0 to 1 years', '1 to 2 years', 'Experienced'],
   mode: ['Remote', 'Hybrid', 'On-site'],
 } as const;
 
